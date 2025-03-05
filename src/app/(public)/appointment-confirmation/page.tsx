@@ -7,6 +7,8 @@ import React, { useEffect, useRef } from "react";
 import AppointmentReceipt from "./_components/appointment-receipt";
 import { useReactToPrint } from "react-to-print";
 import { useSearchParams } from "next/navigation";
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
 
 function AppointmentConfirmation() {
   const searchParams = useSearchParams();
@@ -23,6 +25,17 @@ function AppointmentConfirmation() {
   const handlePrint: any = useReactToPrint({
     content: () => componentRef.current,
   });
+  const handleDownload = async () => {
+    if (componentRef.current) {
+      const imgData = await toPng(componentRef.current);
+      const pdf = new jsPDF();
+      const imgWidth = 190;
+      const imgHeight = (componentRef.current.clientHeight * imgWidth) / componentRef.current.clientWidth;
+
+      pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+      pdf.save(`appointment_receipt_${appointmentId}.pdf`);
+    }
+  };
   const getData = async () => {
     try {
       setLoading(true);
@@ -75,7 +88,7 @@ function AppointmentConfirmation() {
       </div>
       {appointment && (
         <div className="flex justify-end gap-5 w-[600px]">
-          <Button>Download</Button>
+           <Button onClick={handleDownload}>Download</Button>
           <Button type="primary" onClick={handlePrint}>
             Print
           </Button>
