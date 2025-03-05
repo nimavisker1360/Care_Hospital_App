@@ -4,9 +4,15 @@ import AppointmentModel from "@/models/appointment-model";
 import DoctorModel from "@/models/doctor-model";
 import PatientModel from "@/models/patient-model";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export const getDashboardData = async () => {
   try {
+    const todayDate = dayjs().utc().format("YYYY-MM-DD");
+    console.log("Today's Date:", todayDate); // Debugging Log
+
     const [
       todayAppointmentsCount,
       allAppointmentsCount,
@@ -14,11 +20,11 @@ export const getDashboardData = async () => {
       allPatientsCount,
       todayAppointmentsData,
     ] = await Promise.all([
-      AppointmentModel.countDocuments({ date: dayjs().format("YYYY-MM-DD") }),
+      AppointmentModel.countDocuments({ date: todayDate, status: "approved" }),
       AppointmentModel.countDocuments(),
       DoctorModel.countDocuments(),
       PatientModel.countDocuments(),
-      AppointmentModel.find({ date: dayjs().format("YYYY-MM-DD") })
+      AppointmentModel.find({ date: todayDate, status: "approved" })
         .populate("doctor")
         .populate("patient"),
     ]);
@@ -53,7 +59,9 @@ export const getReportsData = async ({
   try {
     const appointments = await AppointmentModel.find({
       date: { $gte: fromDate, $lte: toDate },
-    }).populate("doctor").populate("patient");
+    })
+      .populate("doctor")
+      .populate("patient");
 
     return {
       success: true,

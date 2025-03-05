@@ -43,7 +43,7 @@ function AppointmentReceipt({ appointment }: IAppointmentReceiptProps) {
           {renderProperty("Specialist", appointment.specialist)}
           {renderProperty("Date", appointment.date)}
           {renderProperty("Time", appointment.time)}
-          {renderProperty("Fee", `$ ${appointment.fee}`)}
+          {renderProperty("Fee", ` ${appointment.fee}₺`)}
           {renderProperty("Status", appointment.status.toUpperCase())}
           {renderProperty("Patient Name", appointment.patient.name)}
           {renderProperty("Patient Email", appointment.patient.email)}

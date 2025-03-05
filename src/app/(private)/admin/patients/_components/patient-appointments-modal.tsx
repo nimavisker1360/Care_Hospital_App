@@ -55,7 +55,7 @@ function PatientAppointmentModal({
     {
       title: "Fee",
       dataIndex: "fee",
-      render: (fee: number) => `$${fee}`,
+      render: (fee: number) => `${fee} ₺`,
     },
     {
       title: "Status",

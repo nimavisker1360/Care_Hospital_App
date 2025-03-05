@@ -25,6 +25,7 @@ async function ReportsPage({ searchParams }: ReportsPageProps) {
       <Alert message="Failed to fetch reports data" type="error" showIcon />
     );
   }
+  console.log(data)
   return (
     <div className="p-5 flex flex-col gap-5">
       <PageTitle title="Reports" />
@@ -40,7 +41,7 @@ async function ReportsPage({ searchParams }: ReportsPageProps) {
 
         <DashboardCard
           title="Fee collected"
-          value={`$${data?.feeCollected || 0}`}
+          value={`${data?.feeCollected || 0} ₺`}
           description={`Total consultation fee collected in selected date range`}
         />
       </div>

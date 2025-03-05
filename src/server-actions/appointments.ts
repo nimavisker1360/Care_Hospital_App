@@ -205,3 +205,4 @@ export const getAppointmentByPatientId = async (patientId: string) => {
     };
   }
 };
+

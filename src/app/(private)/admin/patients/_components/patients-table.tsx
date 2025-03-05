@@ -1,11 +1,10 @@
 "use client";
 import { IPatient } from "@/interfaces";
-import { Button, message, Modal, Table,Form, Select, Input } from "antd";
+import { Button, message, Modal, Table, Form, Select, Input } from "antd";
 import { Trash2, Pen, List } from "lucide-react";
 import React, { useState } from "react";
 import PatientAppointmentModal from "./patient-appointments-modal";
 import { deletePatient, updatePatient } from "@/server-actions/patients";
-
 
 interface PatientsTableProps {
   patients: IPatient[];
@@ -14,13 +13,10 @@ interface PatientsTableProps {
 function PatientsTable({ patients }: PatientsTableProps) {
   const [showPatientAppointmentModal, setShowPatientAppointmentModal] =
     useState(false);
-  const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(
-    null
-  );
+  const [selectedPatient, setSelectedPatient] = useState<IPatient | null>(null);
   const [form] = Form.useForm();
   const [showPatients, setShowPatients] = useState<IPatient[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
-
 
   const handleDelete = async (id: string) => {
     Modal.confirm({
@@ -44,7 +40,9 @@ function PatientsTable({ patients }: PatientsTableProps) {
       if (success) {
         message.success("Patient updated successfully");
         setShowPatients((prev) =>
-          prev.map((p) => (p._id === selectedPatient!._id ? { ...p, ...values } : p))
+          prev.map((p) =>
+            p._id === selectedPatient!._id ? { ...p, ...values } : p
+          )
         );
         setShowEditModal(false);
       } else {
@@ -56,7 +54,7 @@ function PatientsTable({ patients }: PatientsTableProps) {
   };
   const handleEdit = (patient: IPatient) => {
     setSelectedPatient(patient);
-    form.setFieldsValue(patient); 
+    form.setFieldsValue(patient);
     setShowEditModal(true);
   };
   const columns = [
@@ -91,10 +89,6 @@ function PatientsTable({ patients }: PatientsTableProps) {
       key: "actions",
       render: (text: any, record: any) => (
         <div className="flex gap-5">
-           <Button size="small" onClick={() => handleDelete(record._id)}>
-            <Trash2 size={14} />
-          </Button>
-
           <Button size="small" onClick={() => handleEdit(record)}>
             <Pen size={14} />
           </Button>
@@ -114,27 +108,57 @@ function PatientsTable({ patients }: PatientsTableProps) {
   ];
   return (
     <div>
-      <Table dataSource={patients} columns={columns} rowKey="_id" pagination={false} />
-      <Modal open={showEditModal} onCancel={() => setShowEditModal(false)} onOk={handleUpdate} title="Edit Patient" centered>
-
+      <Table
+        dataSource={patients}
+        columns={columns}
+        rowKey="_id"
+        pagination={false}
+      />
+      <Modal
+        open={showEditModal}
+        onCancel={() => setShowEditModal(false)}
+        onOk={handleUpdate}
+        title="Edit Patient"
+        centered
+      >
         <Form form={form} layout="vertical">
-          <Form.Item label="Name" name="name" rules={[{ required: true, message: "Name is required" }]}>
+          <Form.Item
+            label="Name"
+            name="name"
+            rules={[{ required: true, message: "Name is required" }]}
+          >
             <Input />
           </Form.Item>
 
-          <Form.Item label="Email" name="email" rules={[{ required: true, message: "Email is required" }]}>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Email is required" }]}
+          >
             <Input type="email" />
           </Form.Item>
 
-          <Form.Item label="Phone" name="phone" rules={[{ required: true, message: "Phone is required" }]}>
+          <Form.Item
+            label="Phone"
+            name="phone"
+            rules={[{ required: true, message: "Phone is required" }]}
+          >
             <Input />
           </Form.Item>
 
-          <Form.Item label="Age" name="age" rules={[{ required: true, message: "Age is required" }]}>
+          <Form.Item
+            label="Age"
+            name="age"
+            rules={[{ required: true, message: "Age is required" }]}
+          >
             <Input type="number" />
           </Form.Item>
 
-          <Form.Item label="Gender" name="gender" rules={[{ required: true, message: "Gender is required" }]}>
+          <Form.Item
+            label="Gender"
+            name="gender"
+            rules={[{ required: true, message: "Gender is required" }]}
+          >
             <Select
               options={[
                 { label: "Male", value: "male" },
@@ -158,5 +182,3 @@ function PatientsTable({ patients }: PatientsTableProps) {
 }
 
 export default PatientsTable;
-
-
